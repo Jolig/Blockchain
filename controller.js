@@ -5,14 +5,14 @@ var express_handlebars = require('express-handlebars');
 var routes = require('./routes/welcome');
 var bodyParser = require('body-parser');
 var hfc = require('hfc');
-
+var util = require('util');
 
 // Init App
 var app = express();
 
 
 //Setting Port
-app.set('port', 3000);
+app.set('port', 443);
 
 
 //View Engine
@@ -232,7 +232,7 @@ function deployChaincode() {
   // Construct the deploy request
   var deployRequest = {
     // Path (under $GOPATH/src) required for deploy in network mode
-    chaincodePath: "log_chaincode" ,
+    chaincodePath: "crowd_fund_chaincode" ,
     // Function to trigger
     fcn: "init",
     // Arguments to the initializing function
@@ -324,7 +324,6 @@ app.post('/submitLog', function(req, res) {
   });
 });
 
-module.exports=chaincode;
 
 
 
