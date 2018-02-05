@@ -320,7 +320,7 @@ app.post('/submitLog', function(req, res) {
 
     console.log(errorMsg);
 
-    res.status(500).json({ error: errorMsg });
+//    res.status(500).json({ error: errorMsg });
   });
 });
 
