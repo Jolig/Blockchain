@@ -150,12 +150,10 @@ global.chaincodeID;
 chain.getMember("admin", function (err, admin) {
   if (err) {
     console.log("ERROR: Failed to get WebAppAdmin member -- " + err);
-    console.log("1---------Sona------------- , value of err is " + err + "and value of admin is" +admin );
     process.exit(1);
   } 
   else {
     console.log("Successfully got WebAppAdmin member.");
-    console.log("3---------Sona------------- , value of err is " + err + "and value of admin is" +admin );  
 
     // Enroll the WebAppAdmin member with the certificate authority using
     // the one time password hard coded inside the membersrvc.yaml.
@@ -163,7 +161,6 @@ chain.getMember("admin", function (err, admin) {
     
     admin.enroll(pw, function (err, enrollment) {
       if (err) {
-        console.log("5---------Sona------------- , value of err is " + err + "and value of password is" +pw + "and value of enrollment is " + enrollment );
         console.log("ERROR: Failed to enroll WebAppAdmin member -- " + err);
         process.exit(1);
       } 
@@ -303,8 +300,12 @@ app.post('/submitLog', function(req, res) {
     args: [username, role, action]
   };
 
+  console.log("Before Invoke Function!!!!!")
+
   // Trigger the invoke transaction
   var invokeTx = app_user.invoke(invokeRequest);
+
+  console.log("After Invoke Function!!!!!")
 
   // Invoke transaction submitted successfully
   invokeTx.on('submitted', function (results) {
