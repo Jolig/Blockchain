@@ -169,7 +169,7 @@ chain.getMember("admin", function (err, admin) {
         console.log("Successfully enrolled WebAppAdmin member.");
         console.log("Setting WebAppAdmin as chain registrar.");
         // Register a new user with WebAppAdmin as the chain registrar
-        console.log("Registering user `WebAppUser_1`.");
+        console.log("Registering user WebAppUser!!!");
         registerUser("WebApp_user1");
       }
     });
@@ -201,16 +201,14 @@ function registerUser(user_name) {
       
       app_user.registerAndEnroll(registrationRequest, function (err, member) {
         if (err) {
-          console.log("ERROR: Failed to enroll " +
-          app_user.getName() + " -- " + err);
+          console.log("ERROR: Failed to enroll WebAppUser - " + err);
           process.exit(1);
         } 
         else {
-          console.log("Successfully registered and enrolled " +
-          app_user.getName() + ".\n");
+          console.log("Successfully registered and enrolled WebAppUser!!!\n");
 
           // Deploy a chaincode with the new user
-          console.log("Deploying chaincode now...");
+          console.log("Deploying chaincode!!!");
           deployChaincode()
         }
       });
@@ -269,7 +267,7 @@ function deployChaincode() {
 //
 // Add route for a chaincode query request for a specific state variable
 //
-console.log("Testingggg");
+console.log("Finally Done!!! Be Happy :p \n");
 
 
 
@@ -321,7 +319,7 @@ app.post('/submitLog', function(req, res) {
 
     console.log(errorMsg);
 
-//    res.status(500).json({ error: errorMsg });
+    res.status(500).json({ error: errorMsg });
   });
 });
 
