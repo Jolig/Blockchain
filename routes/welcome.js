@@ -9,8 +9,12 @@ router.get('/', function(req, res){
 });
 
 
-router.get('/log', function(req, res){
+router.get('/createLog', function(req, res){
 	res.render('createLogForm');
+});
+
+router.get('/viewLog', function(req, res){
+	res.render('submitQuery');
 });
 
 

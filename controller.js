@@ -336,6 +336,38 @@ app.post('/submitLog', function(req, res) {
 });
 
 
+app.post('/submitUsername',function(req,res) {
+  var username = req.body.username;
+
+  var queryRequest = {
+    // Name (hash) required for query
+    chaincodeID: chaincodeID,
+    // Function to trigger
+    fcn: "read",
+    // State variable to retrieve
+    args: [username]
+  };
+
+  // Trigger the query transactio
+  var queryTx = app_user.query(queryRequest);
+
+  // Query completed successfully
+  queryTx.on('complete', function (results) {
+    console.log(util.format("Successfully queried existing chaincode state: " +
+    "request=%j, response=%j, value=%s", queryRequest, results, results.result.toString()));
+ console.log(results.result.username+"Testing Akhilaaaa Sonaaaaa");
+
+ res.header('Access-Control-Allow-Origin', 'example.com');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    var obj=JSON.parse(results.result);
+
+res.render('viewQuery',{result:obj});
+
+  
+});
+
+
 
 
 /*const hostname = '127.0.0.1';
