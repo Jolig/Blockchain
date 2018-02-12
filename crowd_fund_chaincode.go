@@ -3,38 +3,33 @@ package main
 import (
         "errors"
         "fmt"
-        "strconv"
         "encoding/json"
         "github.com/hyperledger/fabric/core/chaincode/shim"
 )
-type SampleChaincode struct {
+type CrowdFundChaincode struct {
 }
 
-type UserLog struct {
-	
-	EmailId string `json:"emailid"`
-	Username string `json:"username"`
-	Role string `json:"role"`
-	Action string `json:"action"`
+type UserLog struct{
+	Username string `json:"username"`;
+	Role string `json:"role"`;
+	Action string `json:"action"`;
 }
 
-func (t *SampleChaincode) Init(stub shim.ChaincodeStubInterface,function string, args []string) ([]byte, error) {
-        var err error
+func (t *CrowdFundChaincode) Init(stub shim.ChaincodeStubInterface,function string, args []string) ([]byte, error) {
+        fmt.Printf("Hello ")
+	var err error
 
         if len(args) != 2 {
-                return nil, errors.New("Incorrect number of arguments. Expecting 2.")
+                return nil, errors.New("Incorrect number of arguments. Expecting 3.")
         }
 
      if err!=nil {
                         return nil, err
                 }
         record := UserLog{}
-        record.EmailId="devyani.bajaj@iiitb.org"
         record.Username = "Devyani"
-        record.Role = "Student";
+        record.Role = "Student"
 	record.Action = "Enrollment"
-		
-        
 	newrecordByte, err := json.Marshal(record);
         if err!=nil {
 
@@ -48,14 +43,14 @@ func (t *SampleChaincode) Init(stub shim.ChaincodeStubInterface,function string,
         return nil, nil
 }
 
-func (t *SampleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *CrowdFundChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 var account string
 
         var err error
 
-        if len(args) != 4 {
-                return nil, errors.New("Incorrect number of arguments. Expecting 2.")
+        if len(args) != 3 {
+                return nil, errors.New("Incorrect number of arguments. Expecting 3.")
         }
           account = args[0]
 
@@ -69,15 +64,11 @@ var account string
         if recordByte != nil {
         errrecordmarshal := json.Unmarshal(recordByte,&record);
         if errrecordmarshal != nil {
-            return nil, errrecordmarshal
-        }            
-        }
-        record.EmailId   =args[0];
-        record.Username =args[1];
-	record.Role =args[2];
-	record.Action =args[3];
-      
-	
+        return nil, errrecordmarshal
+        }}
+        record.Username =args[0];
+	record.Role =args[1];
+	record.Action =args[2];
 	newrecordByte, err := json.Marshal(record);
         if err!=nil {
 
@@ -86,13 +77,12 @@ var account string
         err =stub.PutState(account,newrecordByte);
         if err != nil {
 
-            return nil, err;
-        } 
-        return nil, nil
+            return nil, err
+        }
+	return nil, nil
 }
 
-
-func (t *SampleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *CrowdFundChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
   if function != "read" {
                 return nil, errors.New("Invalid query function name. Expecting \"query\".")
         }
@@ -110,9 +100,8 @@ func (t *SampleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
         return accountValueBytes, nil
 }
 
-
 func main() {
-        err := shim.Start(new(SampleChaincode))
+        err := shim.Start(new(CrowdFundChaincode))
 
         if err != nil {
                 fmt.Printf("Error starting CrowdFundChaincode: %s", err)

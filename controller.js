@@ -6,6 +6,8 @@ var routes = require('./routes/welcome');
 var bodyParser = require('body-parser');
 var hfc = require('hfc');
 var util = require('util');
+var flash = require('connect-flash');
+var session = require('express-session');
 
 // Init App
 var app = express();
@@ -25,6 +27,13 @@ app.set('view engine', 'handlebars');
 // Set Static Folder
 app.use(express.static(__dirname + '/public'));
 
+//Express Session
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
 
 // Application Home page has to be fetched from routes = ./routes/welcome
 app.use('/', routes);
@@ -37,13 +46,21 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-// parse application/json
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
 
+//Connect Flash
+app.use(flash());
 
-
-
+// Global Vars
+app.use(function (req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
+  next();
+});
 
 //-----------------------------------------------------------------------------------------------------------------------------//
 
@@ -168,7 +185,8 @@ chain.getMember("admin", function (err, admin) {
         // Set the WebAppAdmin as the designated chain registrar
         console.log("Successfully enrolled WebAppAdmin member.");
         console.log("Setting WebAppAdmin as chain registrar.");
-        // Register a new user with WebAppAdmin as the chain registrar
+        chain.setRegistrar(admin);
+	// Register a new user with WebAppAdmin as the chain registrar
         console.log("Registering user WebAppUser!!!");
         registerUser("WebApp_user1");
       }
@@ -257,12 +275,12 @@ function deployChaincode() {
 //deploy chaincode ends here
 
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-// app.use(bodyParser.json());
+ app.use(function(req, res, next) {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   next();
+ });
+ app.use(bodyParser.json());
 
 //
 // Add route for a chaincode query request for a specific state variable
@@ -270,13 +288,7 @@ function deployChaincode() {
 console.log("Finally Done!!! Be Happy :p \n");
 
 
-
 //-----------------------------------------------------------------------------------------------------------------------------//
-
-
-
-
-
 
 
 //Control comes here after submit button on CreateLog Form is clicked
@@ -309,7 +321,7 @@ app.post('/submitLog', function(req, res) {
   invokeTx.on('submitted', function (results) {
     console.log(util.format("Successfully submitted chaincode invoke " +
     "transaction: request=%j, response=%j", invokeRequest, results));
-    res.render('logSubmit_Success');
+   res.render('logSubmit_Success.handlebars');
   });
 
   // Invoke transaction submission failed
@@ -319,7 +331,7 @@ app.post('/submitLog', function(req, res) {
 
     console.log(errorMsg);
 
-    res.status(500).json({ error: errorMsg });
+   // res.status(500).json({ error: errorMsg });
   });
 });
 
