@@ -14,7 +14,7 @@ router.get('/createLog', function(req, res){
 });
 
 router.get('/viewLog', function(req, res){
-	res.render('submitQuery');
+	res.render('submitUsername');
 });
 
 

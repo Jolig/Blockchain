@@ -367,7 +367,19 @@ res.render('viewQuery',{result:obj});
   
 });
 
+queryTx.on('error', function (err) {
+    var errorMsg = util.format("ERROR: Failed to query existing chaincode " +
+    "state: request=%j, error=%j", queryRequest, err);
 
+    console.log(errorMsg);
+
+    res.status(500).json({ error: errorMsg });
+ });
+
+
+
+//
+});
 
 
 /*const hostname = '127.0.0.1';
