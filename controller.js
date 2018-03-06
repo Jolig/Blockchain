@@ -319,9 +319,14 @@ app.post('/submitLog', function(req, res) {
 
   // Invoke transaction submitted successfully
   invokeTx.on('submitted', function (results) {
+    display = {
+    ms : "Log Submitted Successfully!!!"
+    }
     console.log(util.format("Successfully submitted chaincode invoke " +
     "transaction: request=%j, response=%j", invokeRequest, results));
-   res.render('logSubmit_Success.handlebars');
+   //res.send({msg : "Successfully Submitted!!!"});
+   res.render('index', {msg : "Successfully Submitted!!!"});
+   //res.status(200).json({msg : "Successfully Submitted!!!"});
   });
 
   // Invoke transaction submission failed
@@ -361,10 +366,7 @@ app.post('/submitUsername',function(req,res) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     var obj=JSON.parse(results.result);
-
-res.render('viewQuery',{result:obj});
-
-  
+    res.render('modifiedIndex',{result:obj});
 });
 
 queryTx.on('error', function (err) {
@@ -373,7 +375,8 @@ queryTx.on('error', function (err) {
 
     console.log(errorMsg);
 
-    res.status(500).json({ error: errorMsg });
+    //res.status(500).json({ error: errorMsg });
+    res.render('modifiedIndex',{error : "No Log with this username"});
  });
 
 
