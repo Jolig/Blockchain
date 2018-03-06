@@ -12,7 +12,6 @@ var session = require('express-session');
 // Init App
 var app = express();
 
-
 //Setting Port
 app.set('port', 443);
 
