@@ -27,51 +27,50 @@ class PagesController < ApplicationController
 			puts "resourcedown name --------- "+resourcedown
 			invoke("downloaded "+resourcedown)
 		end
-	end	
+	end
 
 
 	def invoke(action)
-			uri = URI('http://139.59.89.51:443/submitLog')
+		uri = URI('http://139.59.89.51:443/submitLog')
 
-	        http = Net::HTTP.new(uri.host, uri.port)
-	        req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json', 'Authorization' => 'XXXXXXXXXXXXXXXX'})
-	        
-	        time = Time.now.inspect
-	        obj = {:worldID => "123", :email => $username, :role => "Student", :action => action, :timestamp => time}      
-	        req.body = JSON.generate(obj)
-	        res = http.request(req)
+		http = Net::HTTP.new(uri.host, uri.port)
+		req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json', 'Authorization' => 'XXXXXXXXXXXXXXXX'})
 
-	        puts "post response --------- #{res.body}"
+		time = Time.now.inspect
+		obj = {:worldID => "123", :email => $username, :role => "Student", :action => action, :timestamp => time}
+		req.body = JSON.generate(obj)
+		res = http.request(req)
 
-        rescue => e
-        	puts "failed #{e}"
-    end
+		puts "post response --------- #{res.body}"
+
+	rescue => e
+	    puts "failed #{e}"
+	end
 
 
-    def logs
-    	queryUser = params[:queryUser]
-    	if(queryUser != nil)
-    		puts "queryUser name --------- "+queryUser 
-    		query(queryUser)
-    	end
-    end
+	def logs
+		queryUser = params[:queryUser]
+		if(queryUser != nil)
+			puts "queryUser name --------- "+queryUser
+			query(queryUser)
+		end
+	end
 
 
 	def query(queryUser)
-			domain_uri = 'http://139.59.89.51:443/submitUsername/'+queryUser
-        
-        	uri = URI(domain_uri)
-        	req = Net::HTTP::Get.new(uri)
+		domain_uri = 'http://139.59.89.51:443/submitUsername/'+queryUser
 
-        	res = Net::HTTP.start(uri.host, uri.port) {|http|
-        	http.request(req)}
+		uri = URI(domain_uri)
+		req = Net::HTTP::Get.new(uri)
 
-        	$dataList = JSON.parse(res.body)["result"]["data"]
-        	puts "get response --------- #{res.body}"
+		res = Net::HTTP.start(uri.host, uri.port) {|http|
+			http.request(req)}
 
-        rescue => e
-        	puts "failed #{e}"
+		$dataList = JSON.parse(res.body)["result"]["data"]
+		puts "get response --------- #{res.body}"
+
+	rescue => e
+		puts "failed #{e}"
 	end
 
-	
 end
