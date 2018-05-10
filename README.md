@@ -6,10 +6,10 @@ This project aims at providing a blockchain implementation using Hyperledger Fab
 
 Steps to run the project application
 
-1)	To run the application you first need to clone our github repository Command -
+1)	To run the application you first need to clone our github repository Command
 	$ git clone https://github.com/Jolig/Blockchain
 
-2)	To deploy blockchain run the following command.
+2)	To deploy blockchain run the following command
 	$ ./deploy blockchain.sh
 
 By running the previous command we set the appropriate environment settings and start either a single peer with membership services network or a four peer with membership services network(This will by default start single peer, any other number of peers could be configured).
